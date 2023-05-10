@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 def BloomBerg_WS():
 
+    """ Web Scrapping das notícias do Site da bloomberg """
 
     #parametros para conexão
 
@@ -16,8 +17,8 @@ def BloomBerg_WS():
     conteudo = resposta.content
 
     #HTML
-    soup = BeautifulSoup(conteudo, "html.parser")
-    noticias = soup.findAll('div', attrs={'class': 'flex flex-col lg:flex-col h-full false'})
+    HTML = BeautifulSoup(conteudo, "html.parser")
+    noticias = HTML.findAll('div', attrs={'class': 'flex flex-col lg:flex-col h-full false'})
 
     #Lista para guardar o link e o titulo
     lista_noticias = []
@@ -25,22 +26,18 @@ def BloomBerg_WS():
     #looping para pegar todos os links e titulos da <a class>
     for noticia in noticias:
 
-        Informação = noticia.find('a', attrs={'class': 'hover:text-hover hover:underline'})
-        lista_noticias.append([Informação.text, 'https://www.bloomberglinea.com.br'+Informação['href']])
+        BlocoNoticia = noticia.find('a', attrs={'class': 'hover:text-hover hover:underline'})
+        lista_noticias.append([BlocoNoticia.text, 'https://www.bloomberglinea.com.br'+BlocoNoticia['href']])
         #tem que adicionar 'https://www.bloomberglinea.com.br' na frente do link do href
-
 
     #Criar Dataframe com o título e link
     df = pd.DataFrame(lista_noticias, columns=["Titulo", "Link"])
 
     #Filtro de informações
-    Chaves = ['Banco Central', 'Minério', 'Lucro', 'Fed',\
+    ChavesFiltro = ['Banco Central', 'Minério', 'Lucro', 'Fed',\
               'Copom', 'Selic', 'Inflação','Crise', 'Petróleo', 'Federal Reserve', 'Juros', 'Crédito', 'Commodities']
 
-    df = df[df['Titulo'].str.contains("|".join(Chaves), na=False)]
+    df = df[df['Titulo'].str.contains("|".join(ChavesFiltro), na=False)]
     #Ultimas 5 noticias
-    ultimas = df.head(5)
-    return ultimas
-
-bb = BloomBerg_WS()
-bb
+    ultimas5 = df.head(5)
+    return ultimas5

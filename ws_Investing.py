@@ -21,4 +21,5 @@ def Investing_WS():
         link = "https://br.investing.com"+noticia["href"]
         lista_noticias.append([titulo,link])
     dataframe = pd.DataFrame(lista_noticias,columns=["Título","Link"])
+    dataframe = dataframe.head(5)
     return dataframe

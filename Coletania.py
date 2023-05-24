@@ -13,10 +13,13 @@ def coletania():
     ve = ValorEconomico_WS()
     inv = Investing_WS()
 
-    #coletania = pd.merge(bb, ve, 'outer')
-    coletania = pd.merge(bb, ve, inv, 'outer')
+    coletania1 = pd.merge(bb, ve, 'outer')
+    coletania = pd.merge(coletania1, inv, 'outer')
     print('Noticias consolidadas.')
 
     noticiasAletorias = coletania.sample(5)
     print('Noticias escolhidas.')
     return noticiasAletorias
+
+noticias = coletania()
+noticias
